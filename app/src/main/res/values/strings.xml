@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="push_me">Push me</string>
+    <string name="clear">Clear</string>
+</resources>
