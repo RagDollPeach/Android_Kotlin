@@ -2,8 +2,8 @@ package com.example.weather.domain
 
 data class Weather(
     val city: City = getDefaultCity(),
-    val temperature: Int = 0,
-    val feelsLike: Int = 0
+    val temperature: Int = 33,
+    val feelsLike: Int = 40
 )
 
 data class City(

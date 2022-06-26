@@ -6,11 +6,8 @@ import com.example.weather.model.RepoLocalImpl
 import com.example.weather.model.RepoRemoteImpl
 import com.example.weather.model.Repository
 import com.example.weather.view_model.AppState
-import java.lang.Thread.sleep
 
-class WeatherListViewModel(
-    private val lifeData: MutableLiveData<AppState> = MutableLiveData<AppState>()
-) : ViewModel() {
+class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = MutableLiveData<AppState>()) : ViewModel() {
 
     private lateinit var repository: Repository
 
@@ -29,7 +26,8 @@ class WeatherListViewModel(
     fun sendRequest() {
         choiceRepo()
         lifeData.value = AppState.Loading
-        if ((0..3).random() == 1) {
+        if ((0..3).random() == 1) { // тут проблема не в проверке а в самом AppState.Error как я понял
+            // но что конкретно я не понимаю
             lifeData.postValue(AppState.Error(throw IllegalStateException("Ошибка соединения или фиг ее знает")))
         } else {
             lifeData.postValue(AppState.Success(repository.getWeather(55.755826, 37.617299900000035)))
