@@ -26,8 +26,7 @@ class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = Mut
     fun sendRequest() {
         choiceRepo()
         lifeData.value = AppState.Loading
-        if ((0..3).random() == 1) { // тут проблема не в проверке а в самом AppState.Error как я понял
-            // но что конкретно я не понимаю
+        if ((0..3).random() == 1) {
             lifeData.postValue(AppState.Error(throw IllegalStateException("Ошибка соединения или фиг ее знает")))
         } else {
             lifeData.postValue(AppState.Success(repository.getWeather(55.755826, 37.617299900000035)))
