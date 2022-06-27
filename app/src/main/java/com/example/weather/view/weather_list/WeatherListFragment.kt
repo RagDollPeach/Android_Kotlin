@@ -17,6 +17,8 @@ class WeatherListFragment : Fragment() {
         fun getInstance() = WeatherListFragment()
     }
 
+    var isRussian = false
+
     private lateinit var binding: FragmentWeatherListBinding
     private lateinit var viewModel: WeatherListViewModel
 
@@ -36,7 +38,14 @@ class WeatherListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
-        viewModel.sendRequest()
+
+        binding.floatingButton.setOnClickListener{
+            if (isRussian) {
+                viewModel.getWeatherForRussia()
+            } else {
+                viewModel.getWeatherForWorld()
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -48,12 +57,12 @@ class WeatherListFragment : Fragment() {
             AppState.Loading -> {
                 Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
             }
-            is AppState.Success -> {
+            is AppState.SuccessForOneLocation -> {
                 val result = appState.weatherData
-                binding.cityName.text = result.city.city
-                binding.temperatureValue.text = result.temperature.toString()
-                binding.cityCoordinates.text = "${result.city.lat} - ${result.city.lon}"
-                binding.feelsLikeValue.text = result.feelsLike.toString()
+
+            }
+            is AppState.SuccessForManyLocations -> {
+               // binding.RecyclerView.adapter =
             }
         }
     }
