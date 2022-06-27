@@ -7,7 +7,7 @@ data class Weather(
 )
 
 data class City(
-    val city: String,
+    val name: String,
     val lat: Double,
     val lon: Double,
 )

@@ -8,10 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.weather.R
 import com.example.weather.databinding.FragmentWeatherListBinding
+import com.example.weather.ditails.OnItemClick
+import com.example.weather.domain.Weather
 import com.example.weather.view_model.AppState
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : Fragment(), OnItemClick {
 
     companion object {
         fun getInstance() = WeatherListFragment()
@@ -46,6 +49,7 @@ class WeatherListFragment : Fragment() {
                 viewModel.getWeatherForWorld()
             }
         }
+        viewModel.getWeatherForRussia()
     }
 
     @SuppressLint("SetTextI18n")
@@ -62,8 +66,14 @@ class WeatherListFragment : Fragment() {
 
             }
             is AppState.SuccessForManyLocations -> {
-               // binding.RecyclerView.adapter =
+                binding.recyclerView.adapter = WeatherListAdapter(appState.weatherList)
             }
         }
+    }
+
+    override fun onItemClick(weather: Weather) {
+//        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
+//            R.id.container, DetailsFragment.newInstance(weather)
+//        ).addToBackStack("").commit()
     }
 }
