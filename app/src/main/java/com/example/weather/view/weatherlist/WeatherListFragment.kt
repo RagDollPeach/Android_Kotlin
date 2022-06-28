@@ -9,8 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.databinding.FragmentWeatherListBinding
-import com.example.weather.ditails.OnItemClick
+import com.example.weather.view.ditails.OnItemClick
 import com.example.weather.domain.Weather
+import com.example.weather.view.ditails.DetailsFragment
 import com.example.weather.viewmodel.AppState
 
 class WeatherListFragment : Fragment(), OnItemClick {
@@ -19,21 +20,27 @@ class WeatherListFragment : Fragment(), OnItemClick {
         fun getInstance() = WeatherListFragment()
     }
 
-    var isRussian = true
+    private var isRussian = true
 
-    private lateinit var binding: FragmentWeatherListBinding
-    private lateinit var viewModel: WeatherListViewModel
+    private var _binding: FragmentWeatherListBinding?= null
+    private val binding: FragmentWeatherListBinding
+        get(){
+            return _binding!!
+        }
+
+    lateinit var viewModel: WeatherListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentWeatherListBinding.inflate(inflater)
+        _binding = FragmentWeatherListBinding.inflate(inflater)
         return binding.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,13 +52,14 @@ class WeatherListFragment : Fragment(), OnItemClick {
             isRussian = !isRussian
             if (isRussian) {
                 viewModel.getWeatherForRussia()
-                binding.floatingButton.setImageResource(R.drawable.ic_russia)
+                binding.floatingButton.setImageResource(R.drawable.ic_earth)
             } else {
                 viewModel.getWeatherForWorld()
-                binding.floatingButton.setImageResource(R.drawable.ic_earth)
+                binding.floatingButton.setImageResource(R.drawable.ic_russia)
             }
         }
         viewModel.getWeatherForRussia()
+        binding.floatingButton.setImageResource(R.drawable.ic_earth)
     }
 
     @SuppressLint("SetTextI18n")
@@ -64,18 +72,18 @@ class WeatherListFragment : Fragment(), OnItemClick {
                // Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
             }
             is AppState.SuccessForOneLocation -> {
-                val result = appState.weatherData
+               // val result = appState.weatherData
 
             }
             is AppState.SuccessForManyLocations -> {
-                binding.recyclerView.adapter = WeatherListAdapter(appState.weatherList)
+                binding.recyclerView.adapter = WeatherListAdapter(appState.weatherList,this)
             }
         }
     }
 
     override fun onItemClick(weather: Weather) {
-//        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
-//            R.id.container, DetailsFragment.newInstance(weather)
-//        ).addToBackStack("").commit()
+        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
+            R.id.container, DetailsFragment.getInstance(weather)
+        ).addToBackStack("").commit()
     }
 }

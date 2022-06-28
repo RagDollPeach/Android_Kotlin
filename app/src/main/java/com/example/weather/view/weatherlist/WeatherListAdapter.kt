@@ -5,9 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.WeatherListRecycleItemBinding
+import com.example.weather.view.ditails.OnItemClick
 import com.example.weather.domain.Weather
 
-class WeatherListAdapter(private val dataList: List<Weather>) :
+class WeatherListAdapter(private val dataList: List<Weather>,private val callback: OnItemClick) :
     RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
@@ -27,7 +28,9 @@ class WeatherListAdapter(private val dataList: List<Weather>) :
         fun bind(weather: Weather) {
             val binding = WeatherListRecycleItemBinding.bind(itemView)
             binding.cityName.text = weather.city.name
-
+            binding.root.setOnClickListener {
+                callback.onItemClick(weather)
+            }
         }
     }
 }
