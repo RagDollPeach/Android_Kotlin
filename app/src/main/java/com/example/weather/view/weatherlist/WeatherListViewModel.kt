@@ -1,4 +1,4 @@
-package com.example.weather.view.weather_list
+package com.example.weather.view.weatherlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +7,7 @@ import com.example.weather.model.RepoRemoteImpl
 import com.example.weather.model.RepositoryForManyLocations
 import com.example.weather.model.RepositoryForOneLocation
 import com.example.weather.utils.Location
-import com.example.weather.view_model.AppState
+import com.example.weather.viewmodel.AppState
 
 class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
     ViewModel() {
@@ -38,7 +38,7 @@ class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = Mut
 
     private fun sendRequest(location: Location) {
         choiceRepo()
-        lifeData.value = AppState.Loading
+        //lifeData.value = AppState.Loading
         lifeData.postValue(AppState.SuccessForManyLocations(
                 repositoryForManyLocations.getWeatherList(location)))
     }

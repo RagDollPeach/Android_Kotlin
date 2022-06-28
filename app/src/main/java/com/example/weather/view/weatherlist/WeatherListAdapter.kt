@@ -1,19 +1,17 @@
-package com.example.weather.view.weather_list
+package com.example.weather.view.weatherlist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather.databinding.FragmentWeatherListBinding
 import com.example.weather.databinding.WeatherListRecycleItemBinding
-import com.example.weather.ditails.OnItemClick
 import com.example.weather.domain.Weather
 
 class WeatherListAdapter(private val dataList: List<Weather>) :
     RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
-        val binding = FragmentWeatherListBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = WeatherListRecycleItemBinding.inflate(LayoutInflater.from(parent.context))
         return WeatherViewHolder(binding.root)
     }
 

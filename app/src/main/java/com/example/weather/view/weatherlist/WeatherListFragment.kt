@@ -1,18 +1,17 @@
-package com.example.weather.view.weather_list
+package com.example.weather.view.weatherlist
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.databinding.FragmentWeatherListBinding
 import com.example.weather.ditails.OnItemClick
 import com.example.weather.domain.Weather
-import com.example.weather.view_model.AppState
+import com.example.weather.viewmodel.AppState
 
 class WeatherListFragment : Fragment(), OnItemClick {
 
@@ -20,7 +19,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
         fun getInstance() = WeatherListFragment()
     }
 
-    var isRussian = false
+    var isRussian = true
 
     private lateinit var binding: FragmentWeatherListBinding
     private lateinit var viewModel: WeatherListViewModel
@@ -43,10 +42,13 @@ class WeatherListFragment : Fragment(), OnItemClick {
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
         binding.floatingButton.setOnClickListener{
+            isRussian = !isRussian
             if (isRussian) {
                 viewModel.getWeatherForRussia()
+                binding.floatingButton.setImageResource(R.drawable.ic_russia)
             } else {
                 viewModel.getWeatherForWorld()
+                binding.floatingButton.setImageResource(R.drawable.ic_earth)
             }
         }
         viewModel.getWeatherForRussia()
@@ -59,7 +61,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
                throw IllegalStateException()
             }
             AppState.Loading -> {
-                Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
+               // Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
             }
             is AppState.SuccessForOneLocation -> {
                 val result = appState.weatherData
