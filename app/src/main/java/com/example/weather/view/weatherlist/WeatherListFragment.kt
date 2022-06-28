@@ -53,6 +53,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
             if (isRussian) {
                 viewModel.getWeatherForRussia()
                 binding.floatingButton.setImageResource(R.drawable.ic_earth)
+            // я специально поменял местами картинки , потому что по моему мнению кнопка должна
+            // отображать тот контент который будет отображон при ее нажатии
             } else {
                 viewModel.getWeatherForWorld()
                 binding.floatingButton.setImageResource(R.drawable.ic_russia)
