@@ -39,10 +39,12 @@ class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = Mut
     private fun sendRequest(location: Location) {
         choiceRepo()
         //lifeData.value = AppState.Loading
-        lifeData.postValue(AppState.SuccessForManyLocations(
-                repositoryForManyLocations.getWeatherList(location)))
+        lifeData.postValue(
+            AppState.SuccessForManyLocations(
+                repositoryForManyLocations.getWeatherList(location)
+            )
+        )
     }
-
 
     private fun isConnection(): Boolean {
         return false

@@ -22,9 +22,9 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     private var isRussian = true
 
-    private var _binding: FragmentWeatherListBinding?= null
+    private var _binding: FragmentWeatherListBinding? = null
     private val binding: FragmentWeatherListBinding
-        get(){
+        get() {
             return _binding!!
         }
 
@@ -48,13 +48,11 @@ class WeatherListFragment : Fragment(), OnItemClick {
         viewModel = ViewModelProvider(this).get(WeatherListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
 
-        binding.floatingButton.setOnClickListener{
+        binding.floatingButton.setOnClickListener {
             isRussian = !isRussian
             if (isRussian) {
                 viewModel.getWeatherForRussia()
                 binding.floatingButton.setImageResource(R.drawable.ic_earth)
-            // я специально поменял местами картинки , потому что по моему мнению кнопка должна
-            // отображать тот контент который будет отображон при ее нажатии
             } else {
                 viewModel.getWeatherForWorld()
                 binding.floatingButton.setImageResource(R.drawable.ic_russia)
@@ -68,17 +66,17 @@ class WeatherListFragment : Fragment(), OnItemClick {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-               throw IllegalStateException()
+                throw IllegalStateException()
             }
             AppState.Loading -> {
-               // Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
+                // Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
             }
             is AppState.SuccessForOneLocation -> {
-               // val result = appState.weatherData
+                // val result = appState.weatherData
 
             }
             is AppState.SuccessForManyLocations -> {
-                binding.recyclerView.adapter = WeatherListAdapter(appState.weatherList,this)
+                binding.recyclerView.adapter = WeatherListAdapter(appState.weatherList, this)
             }
         }
     }

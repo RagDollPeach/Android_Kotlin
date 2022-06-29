@@ -10,7 +10,7 @@ import com.example.weather.databinding.FragmentDetailsBinding
 import com.example.weather.domain.Weather
 import com.example.weather.view.weatherlist.WeatherListFragment
 
-class DetailsFragment : Fragment(){
+class DetailsFragment : Fragment() {
 
     companion object {
         const val BUNDLE_WEATHER_BALTIKA = "agmdgfgs "

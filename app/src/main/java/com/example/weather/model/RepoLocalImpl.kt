@@ -8,9 +8,13 @@ import com.example.weather.utils.Location
 class RepoLocalImpl : RepositoryForManyLocations, RepositoryForOneLocation {
 
     override fun getWeatherList(location: Location): List<Weather> {
-       return when(location) {
-            Location.Russian -> { getRussianCities()}
-            Location.World -> { getWorldCities() }
+        return when (location) {
+            Location.Russian -> {
+                getRussianCities()
+            }
+            Location.World -> {
+                getWorldCities()
+            }
         }
     }
 
