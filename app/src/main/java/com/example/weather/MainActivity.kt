@@ -2,10 +2,8 @@ package com.example.weather
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import com.example.weather.databinding.ActivityMainBinding
-import com.example.weather.view.weather_list.WeatherListFragment
-import com.google.android.material.button.MaterialButton
+import com.example.weather.view.weatherlist.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,8 +15,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.container,
-                WeatherListFragment.getInstance()).commit()
+            supportFragmentManager.beginTransaction().replace(
+                R.id.container,
+                WeatherListFragment.getInstance()
+            ).commit()
         }
     }
 }
