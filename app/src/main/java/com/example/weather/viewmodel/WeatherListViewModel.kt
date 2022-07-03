@@ -1,4 +1,4 @@
-package com.example.weather.view.weatherlist
+package com.example.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,7 @@ import com.example.weather.model.RepositoryForManyLocations
 import com.example.weather.model.RepositoryForOneLocation
 import com.example.weather.utils.Location
 import com.example.weather.viewmodel.AppState
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = MutableLiveData<AppState>()) :
     ViewModel() {
@@ -38,12 +39,16 @@ class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = Mut
 
     private fun sendRequest(location: Location) {
         choiceRepo()
-        //lifeData.value = AppState.Loading
-        lifeData.postValue(
-            AppState.SuccessForManyLocations(
-                repositoryForManyLocations.getWeatherList(location)
-            )
-        )
+        lifeData.value = AppState.Loading
+        Thread {
+            Thread.sleep(1500)
+            if ((0..10).random() == 5) {
+                lifeData.postValue(AppState.Error(IllegalStateException("не нужная часть кода")))
+            } else {
+                lifeData.postValue(AppState
+                    .SuccessForManyLocations(repositoryForManyLocations.getWeatherList(location)))
+            }
+        }.start()
     }
 
     private fun isConnection(): Boolean {
