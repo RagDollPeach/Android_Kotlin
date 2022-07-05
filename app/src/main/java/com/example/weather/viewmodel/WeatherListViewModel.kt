@@ -41,7 +41,7 @@ class WeatherListViewModel(private val lifeData: MutableLiveData<AppState> = Mut
         choiceRepo()
         lifeData.value = AppState.Loading
         Thread {
-            Thread.sleep(1500)
+            Thread.sleep(50)
             if ((0..10).random() == 5) {
                 lifeData.postValue(AppState.Error(IllegalStateException("не нужная часть кода")))
             } else {
