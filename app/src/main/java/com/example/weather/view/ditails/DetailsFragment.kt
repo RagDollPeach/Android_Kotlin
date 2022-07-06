@@ -10,13 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.weather.databinding.FragmentDetailsBinding
 import com.example.weather.domain.Weather
-import com.example.weather.model.dto.WeatherDTO
-import com.example.weather.utils.getLines
-import com.google.gson.Gson
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.URL
-import javax.net.ssl.HttpsURLConnection
+import com.example.weather.utils.WeatherLoader
 
 class DetailsFragment : Fragment() {
 
@@ -55,29 +49,16 @@ class DetailsFragment : Fragment() {
         weather?.let { renderData(weather) }
 
         weather?.let {
-
-            val url =
-                URL("https://api.weather.yandex.ru/v2/forecast?lat=${it.city.lat}&lon=${it.city.lon}")
-            val myConnection: HttpsURLConnection?
-
-            myConnection = url.openConnection() as HttpsURLConnection
-            myConnection.readTimeout = 5000
-            myConnection.addRequestProperty("X-Yandex-API-Key","c21646d7-714b-44c7-b798-a0b1b09fb340")
-
-            Thread {
-                val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
-                val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
-
+            WeatherLoader.request(weather.city.lat, weather.city.lon) { weatherDTO ->
                 requireActivity().runOnUiThread {
                     renderData(it.apply {
                         feelsLike = weatherDTO.fact.feelsLike
                         temperature = weatherDTO.fact.temp
                     })
                 }
-            }.start()
+            }
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun renderData(weather: Weather) {
