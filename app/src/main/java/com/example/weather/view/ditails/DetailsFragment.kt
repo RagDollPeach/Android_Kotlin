@@ -10,12 +10,12 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.weather.databinding.FragmentDetailsBinding
 import com.example.weather.domain.Weather
+import com.example.weather.utils.BUNDLE_WEATHER_BALTIC
 import com.example.weather.utils.WeatherLoader
 
 class DetailsFragment : Fragment() {
 
     companion object {
-        const val BUNDLE_WEATHER_BALTIC = "agmdgfgs "
         fun getInstance(weather: Weather) = DetailsFragment().apply {
             arguments = Bundle().also { it.putParcelable(BUNDLE_WEATHER_BALTIC, weather) }
         }
