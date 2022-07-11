@@ -91,15 +91,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
 
     @SuppressLint("SetTextI18n")
     private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Error -> {
-                binding.success()
-                snackBar(
-                    binding.root,
-                    resources.getString(R.string.bar_message),
-                    Snackbar.LENGTH_LONG,
+        when (appState) {is AppState.Error -> { binding.success()
+                binding.root.snackBar(resources.getString(R.string.bar_message), Snackbar.LENGTH_LONG,
                     resources.getString(R.string.action_string)
-                ) {
+                    ,Toast.makeText(requireContext(),"Thank you",Toast.LENGTH_LONG))
                     isRussian = !isRussian
                     if (isRussian) {
                         viewModel.getWeatherForRussia()
@@ -109,7 +104,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
                         binding.floatingButton.setImageResource(R.drawable.ic_russia)
                     }
                 }
-            }
+
             AppState.Loading -> {
                 binding.loading()
             }
@@ -139,8 +134,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
         floatingButton.visibility = View.VISIBLE
     }
 
-    private fun snackBar(view: View,
-        barMessage: String, duration: Int, actionString: String, lambda: (view: View) -> Unit) {
-        Snackbar.make(view, barMessage, duration).setAction(actionString, lambda).show()
+    // Надеюсь я правильно понял ваше замечание
+    private fun View.snackBar(barMessage: String, duration: Int, actionString: String, lambda: Toast) {
+        Snackbar.make(this, barMessage, duration).setAction(actionString) { lambda.show() }.show()
     }
 }
+
+
