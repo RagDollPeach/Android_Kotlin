@@ -8,4 +8,6 @@
     <string name="city_coordinates">lt/ln: %s, %s"</string>
     <string name="bar_message">Произошла самая неожиданная ошибка!!</string>
     <string name="action_string">push me</string>
+    <string name="network_lost">Network lost</string>
+    <string name="network_is_available">Network is available</string>
 </resources>
