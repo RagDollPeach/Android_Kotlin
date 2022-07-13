@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
@@ -13,6 +14,8 @@ import com.example.weather.view.ditails.OnItemClick
 import com.example.weather.domain.Weather
 import com.example.weather.view.ditails.DetailsFragment
 import com.example.weather.viewmodel.AppState
+import com.example.weather.viewmodel.WeatherListViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment(), OnItemClick {
 
@@ -66,16 +69,31 @@ class WeatherListFragment : Fragment(), OnItemClick {
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Error -> {
-                throw IllegalStateException()
+                binding.success()
+                snackBar(
+                    binding.root,
+                    resources.getString(R.string.bar_message),
+                    Snackbar.LENGTH_LONG,
+                    resources.getString(R.string.action_string)
+                ) {
+                    isRussian = !isRussian
+                    if (isRussian) {
+                        viewModel.getWeatherForRussia()
+                        binding.floatingButton.setImageResource(R.drawable.ic_earth)
+                    } else {
+                        viewModel.getWeatherForWorld()
+                        binding.floatingButton.setImageResource(R.drawable.ic_russia)
+                    }
+                }
             }
             AppState.Loading -> {
-                // Toast.makeText(requireContext(), "Загруска $appState", Toast.LENGTH_LONG).show()
+                binding.loading()
             }
             is AppState.SuccessForOneLocation -> {
-                // val result = appState.weatherData
-
+                binding.success()
             }
             is AppState.SuccessForManyLocations -> {
+                binding.success()
                 binding.recyclerView.adapter = WeatherListAdapter(appState.weatherList, this)
             }
         }
@@ -85,5 +103,20 @@ class WeatherListFragment : Fragment(), OnItemClick {
         requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
             R.id.container, DetailsFragment.getInstance(weather)
         ).addToBackStack("").commit()
+    }
+
+    private fun FragmentWeatherListBinding.loading() {
+        fragmentLoadingLayout.visibility = View.VISIBLE
+        floatingButton.visibility = View.GONE
+    }
+
+    private fun FragmentWeatherListBinding.success() {
+        fragmentLoadingLayout.visibility = View.GONE
+        floatingButton.visibility = View.VISIBLE
+    }
+
+    private fun snackBar(view: View,
+        barMessage: String, duration: Int, actionString: String, lambda: (view: View) -> Unit) {
+        Snackbar.make(view, barMessage, duration).setAction(actionString, lambda).show()
     }
 }

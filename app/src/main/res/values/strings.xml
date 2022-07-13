@@ -6,4 +6,6 @@
     <string name="temperature_label">Температура</string>
     <string name="feels_like_label">Ощущается как</string>
     <string name="city_coordinates">lt/ln: %s, %s"</string>
+    <string name="bar_message">Произошла самая неожиданная ошибка!!</string>
+    <string name="action_string">push me</string>
 </resources>
