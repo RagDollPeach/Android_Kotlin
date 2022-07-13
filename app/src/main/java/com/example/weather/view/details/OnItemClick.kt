@@ -1,4 +1,4 @@
-package com.example.weather.view.ditails
+package com.example.weather.view.details
 
 import com.example.weather.domain.Weather
 

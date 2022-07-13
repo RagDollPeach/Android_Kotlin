@@ -3,22 +3,33 @@ package com.example.weather
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.weather.databinding.ActivityMainBinding
+import com.example.weather.view.network.Manager
 import com.example.weather.view.weatherlist.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val networkManager by lazy { Manager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(
                 R.id.container,
                 WeatherListFragment.getInstance()
             ).commit()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        networkManager.registerCallBack()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        networkManager.unregisterCallBack()
     }
 }

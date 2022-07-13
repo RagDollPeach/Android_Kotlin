@@ -1,6 +1,10 @@
 package com.example.weather.view.weatherlist
 
 import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +12,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weather.R
 import com.example.weather.databinding.FragmentWeatherListBinding
-import com.example.weather.view.ditails.OnItemClick
 import com.example.weather.domain.Weather
-import com.example.weather.view.ditails.DetailsFragment
+import com.example.weather.utils.NETWORK_ACTION
+import com.example.weather.utils.NETWORK_KEY
+import com.example.weather.view.details.DetailsFragment
+import com.example.weather.view.details.OnItemClick
 import com.example.weather.viewmodel.AppState
 import com.example.weather.viewmodel.WeatherListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -31,7 +38,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
             return _binding!!
         }
 
-    lateinit var viewModel: WeatherListViewModel
+    private lateinit var viewModel: WeatherListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,6 +51,20 @@ class WeatherListFragment : Fragment(), OnItemClick {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(receiver)
+    }
+
+    //я написал ресивер как вы делали в DetailsFragment но мне кажется что тут зануление не нужно
+    //по скольку создание ресивера не влеяет на работу программы, и не вызывает ошибок.
+    // Или я заблуждаюсь, но на всякий случай сделал зануление ресивера по вашему примеру.
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                it.getStringExtra(NETWORK_KEY)?.let { str ->
+                    Toast.makeText(context,str,Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,19 +84,17 @@ class WeatherListFragment : Fragment(), OnItemClick {
         }
         viewModel.getWeatherForRussia()
         binding.floatingButton.setImageResource(R.drawable.ic_earth)
+
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(receiver, IntentFilter(NETWORK_ACTION))
     }
 
     @SuppressLint("SetTextI18n")
     private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Error -> {
-                binding.success()
-                snackBar(
-                    binding.root,
-                    resources.getString(R.string.bar_message),
-                    Snackbar.LENGTH_LONG,
+        when (appState) {is AppState.Error -> { binding.success()
+                binding.root.snackBar(resources.getString(R.string.bar_message), Snackbar.LENGTH_LONG,
                     resources.getString(R.string.action_string)
-                ) {
+                    ,Toast.makeText(requireContext(),"Thank you",Toast.LENGTH_LONG))
                     isRussian = !isRussian
                     if (isRussian) {
                         viewModel.getWeatherForRussia()
@@ -85,7 +104,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
                         binding.floatingButton.setImageResource(R.drawable.ic_russia)
                     }
                 }
-            }
+
             AppState.Loading -> {
                 binding.loading()
             }
@@ -115,8 +134,10 @@ class WeatherListFragment : Fragment(), OnItemClick {
         floatingButton.visibility = View.VISIBLE
     }
 
-    private fun snackBar(view: View,
-        barMessage: String, duration: Int, actionString: String, lambda: (view: View) -> Unit) {
-        Snackbar.make(view, barMessage, duration).setAction(actionString, lambda).show()
+    // Надеюсь я правильно понял ваше замечание
+    private fun View.snackBar(barMessage: String, duration: Int, actionString: String, lambda: Toast) {
+        Snackbar.make(this, barMessage, duration).setAction(actionString) { lambda.show() }.show()
     }
 }
+
+
