@@ -22,14 +22,24 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Москва" />
 
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cityName"
+            app:layout_constraintBottom_toTopOf="@id/cityCoordinates"/>
+
         <TextView
             android:id="@+id/cityCoordinates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityName"
+            app:layout_constraintTop_toBottomOf="@+id/icon"
             tools:text="lt/ln: 55.755826, 37.617299900000035" />
 
         <TextView
@@ -75,5 +85,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feelsLikeLabel"
             tools:text="-23" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

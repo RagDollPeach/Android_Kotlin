@@ -20,14 +20,15 @@ import com.example.weather.utils.NETWORK_ACTION
 import com.example.weather.utils.NETWORK_KEY
 import com.example.weather.view.details.DetailsFragment
 import com.example.weather.view.details.OnItemClick
-import com.example.weather.viewmodel.citieslist.CityListFragmentAppState
 import com.example.weather.viewmodel.citieslist.CitiesListViewModel
+import com.example.weather.viewmodel.citieslist.CityListFragmentAppState
 import com.google.android.material.snackbar.Snackbar
 
 class CitiesListFragment : Fragment(), OnItemClick {
 
     companion object {
         fun getInstance() = CitiesListFragment()
+        var list = mutableListOf<Int>()
     }
 
     private var isRussian = true
@@ -58,7 +59,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
                 it.getStringExtra(NETWORK_KEY)?.let { str ->
-                    Toast.makeText(context,str,Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, str, Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -84,24 +85,56 @@ class CitiesListFragment : Fragment(), OnItemClick {
 
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(receiver, IntentFilter(NETWORK_ACTION))
+
+        binding.okhttp.setOnClickListener {
+            if (list.isNotEmpty()) {
+                list.clear()
+            }
+            list.add(1)
+        }
+
+        binding.retrofit.setOnClickListener {
+            if (list.isNotEmpty()) {
+                list.clear()
+            }
+            list.add(2)
+        }
+
+        binding.loader.setOnClickListener {
+            if (list.isNotEmpty()) {
+                list.clear()
+            }
+            list.add(3)
+        }
+
+        binding.local.setOnClickListener {
+            if (list.isNotEmpty()) {
+                list.clear()
+            }
+            list.add(0)
+        }
     }
 
     @SuppressLint("SetTextI18n")
     private fun renderData(appState: CityListFragmentAppState) {
         when (appState) {
-            is CityListFragmentAppState.Error -> { binding.success()
-                binding.root.snackBar(resources.getString(R.string.bar_message), Snackbar.LENGTH_LONG,
-                    resources.getString(R.string.action_string)
-                    ,Toast.makeText(binding.root.context,"Thank you",Toast.LENGTH_LONG))
-                    isRussian = !isRussian
-                    if (isRussian) {
-                        viewModel.getWeatherForRussia()
-                        binding.floatingButton.setImageResource(R.drawable.ic_earth)
-                    } else {
-                        viewModel.getWeatherForWorld()
-                        binding.floatingButton.setImageResource(R.drawable.ic_russia)
-                    }
+            is CityListFragmentAppState.Error -> {
+                binding.success()
+                binding.root.snackBar(
+                    resources.getString(R.string.bar_message),
+                    Snackbar.LENGTH_LONG,
+                    resources.getString(R.string.action_string),
+                    Toast.makeText(binding.root.context, "Thank you", Toast.LENGTH_LONG)
+                )
+                isRussian = !isRussian
+                if (isRussian) {
+                    viewModel.getWeatherForRussia()
+                    binding.floatingButton.setImageResource(R.drawable.ic_earth)
+                } else {
+                    viewModel.getWeatherForWorld()
+                    binding.floatingButton.setImageResource(R.drawable.ic_russia)
                 }
+            }
 
             CityListFragmentAppState.Loading -> {
                 binding.loading()
@@ -132,7 +165,12 @@ class CitiesListFragment : Fragment(), OnItemClick {
         floatingButton.visibility = View.VISIBLE
     }
 
-    private fun View.snackBar(barMessage: String, duration: Int, actionString: String, lambda: Toast) {
+    private fun View.snackBar(
+        barMessage: String,
+        duration: Int,
+        actionString: String,
+        lambda: Toast
+    ) {
         Snackbar.make(this, barMessage, duration).setAction(actionString) { lambda.show() }.show()
     }
 }

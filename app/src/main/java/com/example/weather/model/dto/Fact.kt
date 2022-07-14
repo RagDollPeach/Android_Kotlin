@@ -10,4 +10,5 @@ data class Fact(
     @SerializedName("feels_like")
     val feelsLike: Int,
     val temp: Int,
+    val icon: String = "bkn_n"
 ) : Parcelable
