@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.view.network.Manager
-import com.example.weather.view.weatherlist.WeatherListFragment
+import com.example.weather.view.weatherlist.CitiesListFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().replace(
                 R.id.container,
-                WeatherListFragment.getInstance()
+                CitiesListFragment.getInstance()
             ).commit()
         }
     }
