@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,8 @@ import com.example.weather.view.details.OnItemClick
 import com.example.weather.viewmodel.citieslist.CitiesListViewModel
 import com.example.weather.viewmodel.citieslist.CityListFragmentAppState
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_weather_list.*
+
 
 class CitiesListFragment : Fragment(), OnItemClick {
 
@@ -86,34 +89,19 @@ class CitiesListFragment : Fragment(), OnItemClick {
         LocalBroadcastManager.getInstance(requireContext())
             .registerReceiver(receiver, IntentFilter(NETWORK_ACTION))
 
-        binding.okhttp.setOnClickListener {
-            if (list.isNotEmpty()) {
-                list.clear()
-            }
-            list.add(1)
-        }
+        val pref = requireActivity().getSharedPreferences("radio_buttons", Context.MODE_PRIVATE)
 
-        binding.retrofit.setOnClickListener {
-            if (list.isNotEmpty()) {
-                list.clear()
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            val radio: RadioButton = view.findViewById(checkedId)
+            when (radio) {
+                okhttp -> pref.edit().putInt("pref", 1).apply()
+                retrofit -> pref.edit().putInt("pref", 2).apply()
+                loader -> pref.edit().putInt("pref", 3).apply()
+                local -> pref.edit().putInt("pref", 0).apply()
             }
-            list.add(2)
-        }
-
-        binding.loader.setOnClickListener {
-            if (list.isNotEmpty()) {
-                list.clear()
-            }
-            list.add(3)
-        }
-
-        binding.local.setOnClickListener {
-            if (list.isNotEmpty()) {
-                list.clear()
-            }
-            list.add(0)
         }
     }
+
 
     @SuppressLint("SetTextI18n")
     private fun renderData(appState: CityListFragmentAppState) {

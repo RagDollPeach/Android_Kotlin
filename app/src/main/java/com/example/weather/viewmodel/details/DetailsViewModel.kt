@@ -1,11 +1,12 @@
 package com.example.weather.viewmodel.details
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weather.MyApplication
 import com.example.weather.model.*
 import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.model.retrofit.RepoDetailsRetrofitImpl
-import com.example.weather.view.weatherlist.CitiesListFragment
 import java.io.IOException
 
 class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :
@@ -19,7 +20,8 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
     }
 
     private fun choiceRepo() {
-        repository = when (CitiesListFragment.list[0]) {
+        val pref = MyApplication.getMyApp().getSharedPreferences("db", Context.MODE_PRIVATE)
+        repository = when (pref.getInt("pref", 0)) {
             1 -> { RepoDetailsOkHttpImpl() }
             2 -> { RepoDetailsRetrofitImpl() }
             3 -> { RepositoryDetailsWeatherLoaderImpl() }
