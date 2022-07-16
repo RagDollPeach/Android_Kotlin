@@ -1,14 +1,14 @@
 package com.example.weather.domain
 
 import android.os.Parcelable
-import com.example.weather.model.dto.WeatherDTO
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Weather(
-    val city: City = getDefaultCity(),
+    val city: City,
     var temperature: Int = 33,
-    var feelsLike: Int = 40
+    var feelsLike: Int = 40,
+    var icon: String = "bkn_n"
 ) : Parcelable
 
 @Parcelize
@@ -17,8 +17,6 @@ data class City(
     val lat: Double,
     val lon: Double,
 ) : Parcelable
-
-fun getDefaultCity() = City("Москва", 55.755826, 37.617299900000035)
 
 fun getWorldCities(): List<Weather> {
     return listOf(

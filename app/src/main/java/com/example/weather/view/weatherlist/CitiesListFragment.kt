@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weather.R
-import com.example.weather.databinding.FragmentWeatherListBinding
+import com.example.weather.databinding.FragmentCityListBinding
 import com.example.weather.domain.Weather
 import com.example.weather.utils.NETWORK_ACTION
 import com.example.weather.utils.NETWORK_KEY
@@ -24,20 +24,19 @@ import com.example.weather.view.details.OnItemClick
 import com.example.weather.viewmodel.citieslist.CitiesListViewModel
 import com.example.weather.viewmodel.citieslist.CityListFragmentAppState
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_weather_list.*
+import kotlinx.android.synthetic.main.fragment_city_list.*
 
 
 class CitiesListFragment : Fragment(), OnItemClick {
 
     companion object {
         fun getInstance() = CitiesListFragment()
-        var list = mutableListOf<Int>()
     }
 
     private var isRussian = true
 
-    private var _binding: FragmentWeatherListBinding? = null
-    private val binding: FragmentWeatherListBinding
+    private var _binding: FragmentCityListBinding? = null
+    private val binding: FragmentCityListBinding
         get() {
             return _binding!!
         }
@@ -48,7 +47,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentWeatherListBinding.inflate(inflater)
+        _binding = FragmentCityListBinding.inflate(inflater)
         return binding.root
     }
 
@@ -92,16 +91,16 @@ class CitiesListFragment : Fragment(), OnItemClick {
         val pref = requireActivity().getSharedPreferences("radio_buttons", Context.MODE_PRIVATE)
 
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            val radio: RadioButton = view.findViewById(checkedId)
+            val radio: RadioButton = binding.root.findViewById(checkedId)
             when (radio) {
-                okhttp -> pref.edit().putInt("pref", 1).apply()
-                retrofit -> pref.edit().putInt("pref", 2).apply()
-                loader -> pref.edit().putInt("pref", 3).apply()
-                local -> pref.edit().putInt("pref", 0).apply()
+                okhttp -> { pref.edit().putInt("pref", 1).apply() }
+                retrofit -> { pref.edit().putInt("pref", 2).apply() }
+                loader -> { pref.edit().putInt("pref", 3).apply() }
+                room -> { pref.edit().putInt("pref", 4).apply() }
+                local -> { pref.edit().putInt("pref", 0).apply() }
             }
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun renderData(appState: CityListFragmentAppState) {
@@ -143,12 +142,12 @@ class CitiesListFragment : Fragment(), OnItemClick {
         ).addToBackStack("").commit()
     }
 
-    private fun FragmentWeatherListBinding.loading() {
+    private fun FragmentCityListBinding.loading() {
         fragmentLoadingLayout.visibility = View.VISIBLE
         floatingButton.visibility = View.GONE
     }
 
-    private fun FragmentWeatherListBinding.success() {
+    private fun FragmentCityListBinding.success() {
         fragmentLoadingLayout.visibility = View.GONE
         floatingButton.visibility = View.VISIBLE
     }

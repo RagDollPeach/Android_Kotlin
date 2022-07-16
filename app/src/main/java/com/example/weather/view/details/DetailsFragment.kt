@@ -55,7 +55,7 @@ class DetailsFragment : Fragment() {
         }
         weather?.let { weatherLocal ->
             this.weather = weatherLocal
-            viewModel.getWeather(weatherLocal.city.lat, weatherLocal.city.lon)
+            viewModel.getWeather(weatherLocal)
             viewModel.getLiveData().observe(viewLifecycleOwner) {
                 renderData(it)
             }
@@ -69,12 +69,12 @@ class DetailsFragment : Fragment() {
             DetailsFragmentAppState.Loading -> {}
             is DetailsFragmentAppState.Success -> {
                 with(binding) {
-                    val weatherDTO = detailsFragmentAppState.weatherData
+                    val weather = detailsFragmentAppState.weatherData
                     cityName.text = weather.city.name
-                    temperatureValue.text = weatherDTO.fact.temp.toString()
-                    feelsLikeValue.text = weatherDTO.fact.feelsLike.toString()
+                    temperatureValue.text = weather.temperature.toString()
+                    feelsLikeValue.text = weather.feelsLike.toString()
                     cityCoordinates.text = "${weather.city.lat} / ${weather.city.lon}"
-                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
+                    icon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weather.icon}.svg")
                 }
             }
         }

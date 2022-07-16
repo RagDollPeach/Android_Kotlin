@@ -1,43 +1,64 @@
 package com.example.weather.viewmodel.details
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.MyApplication
+import com.example.weather.domain.Weather
 import com.example.weather.model.*
-import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.model.retrofit.RepoDetailsRetrofitImpl
 import java.io.IOException
+
 
 class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :
     ViewModel() {
 
     private lateinit var repository: RepositoryDetails
-
+    private lateinit var repositoryInsertable: RepositoryRoomInsertable
 
     fun getLiveData(): MutableLiveData<DetailsFragmentAppState> {
         return lifeData
     }
 
     private fun choiceRepo() {
-        val pref = MyApplication.getMyApp().getSharedPreferences("db", Context.MODE_PRIVATE)
-        repository = when (pref.getInt("pref", 0)) {
-            1 -> { RepoDetailsOkHttpImpl() }
-            2 -> { RepoDetailsRetrofitImpl() }
-            3 -> { RepositoryDetailsWeatherLoaderImpl() }
-            else -> { RepoDetailsLocalImpl() }
+        val pref =
+            MyApplication.getMyApp().getSharedPreferences("radio_buttons", Context.MODE_PRIVATE)
+        repository = if (isConnection(MyApplication.getMyApp().applicationContext)) {
+            when (pref.getInt("pref", 0)) {
+                1 -> { RepoDetailsOkHttpImpl() }
+                2 -> { RepoDetailsRetrofitImpl() }
+                3 -> { RepositoryDetailsWeatherLoaderImpl() }
+                4 -> { RepositoryRoomImpl() }
+                else -> { RepoDetailsLocalImpl() }
+            }
+        } else {
+            when (pref.getInt("pref", 0)) {
+                4 -> { RepositoryRoomImpl() }
+                else -> { RepoDetailsLocalImpl() }
+            }
         }
+
+        when(repository.javaClass) {
+            RepoDetailsOkHttpImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"OkHTTP Working",Toast.LENGTH_LONG).show()
+            RepoDetailsRetrofitImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"Retrofit Working",Toast.LENGTH_LONG).show()
+            RepositoryDetailsWeatherLoaderImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"WeatherLoader Working",Toast.LENGTH_LONG).show()
+            RepoDetailsLocalImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"Local Working",Toast.LENGTH_LONG).show()
+        }
+
+        repositoryInsertable = RepositoryRoomImpl()
     }
 
-    fun getWeather(lat: Double, lon: Double) {
+    fun getWeather(weather: Weather) {
         choiceRepo()
         lifeData.value = DetailsFragmentAppState.Loading
-        repository.getWeather(lat, lon, callBack)
+        repository.getWeather(weather, callBack)
     }
 
     private val callBack = object : MyLargeFatCallBack {
-        override fun onResponse(weatherDTO: WeatherDTO) {
-            lifeData.postValue(DetailsFragmentAppState.Success(weatherDTO))
+        override fun onResponse(weather: Weather) {
+            lifeData.postValue(DetailsFragmentAppState.Success(weather))
         }
 
         override fun onError(e: IOException) {
@@ -45,8 +66,18 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
         }
     }
 
-    private fun isConnection(): Boolean {
-        return false
+    private fun isConnection(context: Context): Boolean {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+        if (wifiInfo != null && wifiInfo.isConnected) {
+            return true
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+        if (wifiInfo != null && wifiInfo.isConnected) {
+            return true
+        }
+        wifiInfo = cm.activeNetworkInfo
+        return wifiInfo != null && wifiInfo.isConnected
     }
 }
 

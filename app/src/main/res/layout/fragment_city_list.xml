@@ -71,11 +71,20 @@
             android:textSize="14sp" />
 
         <RadioButton
+            android:id="@+id/room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/room"
+            android:textAllCaps="false"
+            android:textSize="14sp" />
+
+        <RadioButton
             android:id="@+id/local"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/local"
             android:textAllCaps="false"
             android:textSize="14sp" />
+
     </RadioGroup>
 </androidx.constraintlayout.widget.ConstraintLayout>
