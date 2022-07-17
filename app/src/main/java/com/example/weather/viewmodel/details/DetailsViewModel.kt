@@ -25,7 +25,7 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
     private fun choiceRepo() {
         val pref =
             MyApplication.getMyApp().getSharedPreferences("radio_buttons", Context.MODE_PRIVATE)
-        repository = if (isConnection(MyApplication.getMyApp().applicationContext)) {
+        repository = if (isConnection(MyApplication.getMyApp())) {
             when (pref.getInt("pref", 0)) {
                 1 -> { RepoDetailsOkHttpImpl() }
                 2 -> { RepoDetailsRetrofitImpl() }
@@ -41,10 +41,11 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
         }
 
         when(repository.javaClass) {
-            RepoDetailsOkHttpImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"OkHTTP Working",Toast.LENGTH_LONG).show()
-            RepoDetailsRetrofitImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"Retrofit Working",Toast.LENGTH_LONG).show()
-            RepositoryDetailsWeatherLoaderImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"WeatherLoader Working",Toast.LENGTH_LONG).show()
-            RepoDetailsLocalImpl().javaClass -> Toast.makeText(MyApplication.getMyApp().applicationContext,"Local Working",Toast.LENGTH_LONG).show()
+            RepoDetailsOkHttpImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"OkHTTP Working",Toast.LENGTH_SHORT).show()
+            RepoDetailsRetrofitImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"Retrofit Working",Toast.LENGTH_SHORT).show()
+            RepositoryDetailsWeatherLoaderImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"WeatherLoader Working",Toast.LENGTH_SHORT).show()
+            RepoDetailsLocalImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"Local Working",Toast.LENGTH_SHORT).show()
+            RepositoryRoomImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"Room Working",Toast.LENGTH_SHORT).show()
         }
 
         repositoryInsertable = RepositoryRoomImpl()
@@ -58,6 +59,9 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
 
     private val callBack = object : MyLargeFatCallBack {
         override fun onResponse(weather: Weather) {
+            if (isConnection(MyApplication.getMyApp())) {
+                repositoryInsertable.insertWeather(weather)
+            }
             lifeData.postValue(DetailsFragmentAppState.Success(weather))
         }
 

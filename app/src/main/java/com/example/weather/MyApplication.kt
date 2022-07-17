@@ -15,16 +15,15 @@ class MyApplication : Application() {
         private var myApplication: MyApplication? = null
         private var weatherDatabase: WeatherDatabase? = null
         fun getMyApp() = myApplication!!
+
         fun getWeatherDatabase(): WeatherDatabase {
             if (weatherDatabase == null) {
-                Thread {
-                    weatherDatabase =
-                        Room.databaseBuilder(getMyApp(), WeatherDatabase::class.java, ROOM_DATABASE)
-                            .build()
-                }.start()
-
+                weatherDatabase =
+                    Room.databaseBuilder(getMyApp(), WeatherDatabase::class.java, ROOM_DATABASE)
+                        .allowMainThreadQueries()// не получилось избавится от этого метода
+                        .build()
             }
-            return weatherDatabase as WeatherDatabase
+            return weatherDatabase!!
         }
     }
 }

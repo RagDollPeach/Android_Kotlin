@@ -15,7 +15,7 @@ fun getLines(reader: BufferedReader): String {
 
 fun convertDtoToModel(weatherDTO: WeatherDTO,weather: Weather): Weather {
     val fact: Fact = weatherDTO.fact
-    return Weather(weather.city, fact.temp, fact.feelsLike)
+    return Weather(weather.city, fact.temp, fact.feelsLike, fact.icon)
 }
 
 fun convertModelToDto(weather: Weather): WeatherDTO {

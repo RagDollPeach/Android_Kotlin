@@ -56,9 +56,7 @@ class DetailsFragment : Fragment() {
         weather?.let { weatherLocal ->
             this.weather = weatherLocal
             viewModel.getWeather(weatherLocal)
-            viewModel.getLiveData().observe(viewLifecycleOwner) {
-                renderData(it)
-            }
+            viewModel.getLiveData().observe(viewLifecycleOwner) { renderData(it) }
         }
     }
 
@@ -81,7 +79,6 @@ class DetailsFragment : Fragment() {
     }
 
     private fun ImageView.loadUrl(url: String) {
-
         val imageLoader = ImageLoader.Builder(this.context)
             .componentRegistry { add(SvgDecoder(this@loadUrl.context)) }
             .build()
