@@ -2,7 +2,6 @@ package com.example.weather.viewmodel.details
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.MyApplication
@@ -39,13 +38,13 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
                 else -> { RepoDetailsLocalImpl() }
             }
         }
-
+        val response = MyApplication.getMyApp().getSharedPreferences("repo_check", Context.MODE_PRIVATE)
         when(repository.javaClass) {
-            RepoDetailsOkHttpImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"OkHTTP Working",Toast.LENGTH_SHORT).show()
-            RepoDetailsRetrofitImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"Retrofit Working",Toast.LENGTH_SHORT).show()
-            RepositoryDetailsWeatherLoaderImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"WeatherLoader Working",Toast.LENGTH_SHORT).show()
-            RepoDetailsLocalImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"Local Working",Toast.LENGTH_SHORT).show()
-            RepositoryRoomImpl().javaClass -> Toast.makeText(MyApplication.getMyApp(),"Room Working",Toast.LENGTH_SHORT).show()
+            RepoDetailsOkHttpImpl().javaClass -> response.edit().putString("resp", "OkHTTP Working").apply()
+            RepoDetailsRetrofitImpl().javaClass -> response.edit().putString("resp", "Retrofit Working").apply()
+            RepositoryDetailsWeatherLoaderImpl().javaClass -> response.edit().putString("resp","WeatherLoader Working").apply()
+            RepoDetailsLocalImpl().javaClass -> response.edit().putString("resp","Local Working").apply()
+            RepositoryRoomImpl().javaClass -> response.edit().putString("resp","Room Working").apply()
         }
 
         repositoryInsertable = RepositoryRoomImpl()

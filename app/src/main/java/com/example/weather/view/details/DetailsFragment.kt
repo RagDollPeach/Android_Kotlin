@@ -1,18 +1,21 @@
 package com.example.weather.view.details
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
+import com.example.weather.MyApplication
 import com.example.weather.databinding.FragmentDetailsBinding
 import com.example.weather.domain.Weather
 import com.example.weather.utils.BUNDLE_WEATHER_DTO_KEY
@@ -58,6 +61,14 @@ class DetailsFragment : Fragment() {
             viewModel.getWeather(weatherLocal)
             viewModel.getLiveData().observe(viewLifecycleOwner) { renderData(it) }
         }
+
+        val response = MyApplication.getMyApp().getSharedPreferences("repo_check", Context.MODE_PRIVATE)
+        val respBody = response.getString("resp","no data").toString()
+        printResponse(respBody)
+    }
+
+    private fun printResponse(str :String) {
+        Toast.makeText(requireContext(),str,Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("SetTextI18n")
