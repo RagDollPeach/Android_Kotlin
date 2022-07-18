@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.example.weather.MyApplication
 import com.example.weather.databinding.FragmentDetailsBinding
 import com.example.weather.domain.Weather
 import com.example.weather.utils.BUNDLE_WEATHER_DTO_KEY
@@ -62,7 +61,7 @@ class DetailsFragment : Fragment() {
             viewModel.getLiveData().observe(viewLifecycleOwner) { renderData(it) }
         }
 
-        val response = MyApplication.getMyApp().getSharedPreferences("repo_check", Context.MODE_PRIVATE)
+        val response = requireActivity().getSharedPreferences("repo_check", Context.MODE_PRIVATE)
         val respBody = response.getString("resp","no data").toString()
         printResponse(respBody)
     }
