@@ -15,4 +15,6 @@
     <string name="weather_loader">Weather Loader</string>
     <string name="local">Local</string>
     <string name="room">Room</string>
+    <string name="contacts">contacts</string>
+    <string name="zadolbat">Пожалуйста дайте мне доступ к вашим контактам что бы я мог рассылать спам вашим друзьям, пожалуйста мне очень нужно задолбать кого нибудь, дайте мне доступ!!!</string>
 </resources>
