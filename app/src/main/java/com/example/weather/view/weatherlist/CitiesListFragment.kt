@@ -61,7 +61,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
         override fun onReceive(context: Context?, intent: Intent?) {
             intent?.let {
                 it.getStringExtra(NETWORK_KEY)?.let { str ->
-                    Toast.makeText(context, str, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
                 }
             }
         }

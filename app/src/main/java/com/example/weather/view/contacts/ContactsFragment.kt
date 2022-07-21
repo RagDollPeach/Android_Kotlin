@@ -16,7 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.weather.R
 import com.example.weather.databinding.FragmentContactsBinding
-import com.example.weather.utils.REQUEST_CODE_READ_CONTACTS
+import com.example.weather.utils.REQUEST_CODES
+import com.example.weather.view.weatherlist.CitiesListFragment
 
 class ContactsFragment : Fragment() {
 
@@ -41,21 +42,20 @@ class ContactsFragment : Fragment() {
 
     private fun checkPermission() {
         val permission = ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CONTACTS)
-        PackageManager.PERMISSION_GRANTED
         if (permission == PackageManager.PERMISSION_GRANTED) {
             getContacts()
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
             AlertDialog.Builder(requireContext())
-                .setTitle("Доступ к контактам")
-                .setMessage(R.string.zadolbat)
-                .setPositiveButton("Дать задолбать") { _, _ ->
-                    permissionRequest(Manifest.permission.READ_CONTACTS)
+                .setTitle("Доступ к контактам и звонкам")
+                .setMessage(R.string.message)
+                .setPositiveButton("Дать") { _, _ ->
+                    permissionRequest()
                 }
-                .setNegativeButton("Не дать задолбать") { dialog, _ -> dialog.dismiss() }
+                .setNegativeButton("Не дать") { dialog, _ -> dialog.dismiss() }
                 .create()
                 .show()
         } else {
-            permissionRequest(Manifest.permission.READ_CONTACTS)
+            permissionRequest()
         }
     }
 
@@ -65,20 +65,25 @@ class ContactsFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_CODE_READ_CONTACTS) {
+        if (requestCode == REQUEST_CODES) {
             permissions.forEachIndexed { index, _ ->
                 if (permissions[index] == Manifest.permission.READ_CONTACTS
-                    && grantResults[index] == PackageManager.PERMISSION_GRANTED
-                ) {
+                    && grantResults[index] == PackageManager.PERMISSION_GRANTED) {
                     getContacts()
+                } else if (permissions[index] == Manifest.permission.READ_CONTACTS
+                    && grantResults[index] == PackageManager.PERMISSION_DENIED) {
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.container, CitiesListFragment())
+                        .addToBackStack(null)
+                        .commit()
                 }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun permissionRequest(permission: String) {
-        requestPermissions(arrayOf(permission), REQUEST_CODE_READ_CONTACTS)
+    private fun permissionRequest() {
+        requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS,Manifest.permission.CALL_PHONE), REQUEST_CODES)
     }
 
     @SuppressLint("Range")
@@ -102,7 +107,7 @@ class ContactsFragment : Fragment() {
                     val nameAndNumber = "$name - $number"
                     text = nameAndNumber
                     textSize = 24F
-                    setOnClickListener { startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${number}"))) }
+                    setOnClickListener { startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:${number}"))) }
                 })
             }
         }
