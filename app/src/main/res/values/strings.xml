@@ -15,4 +15,6 @@
     <string name="weather_loader">Weather Loader</string>
     <string name="local">Local</string>
     <string name="room">Room</string>
+    <string name="contacts">contacts</string>
+    <string name="message">Давай доступ которйы просит программа или иди ..... :D</string>
 </resources>
