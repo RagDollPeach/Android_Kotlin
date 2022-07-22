@@ -25,7 +25,6 @@ class MyApplication : Application() {
             if (weatherDatabase == null) {
                 weatherDatabase =
                     Room.databaseBuilder(getMyApp(), WeatherDatabase::class.java, ROOM_DATABASE)
-                        .allowMainThreadQueries()// не получилось избавится от этого метода
                         .build()
             }
             return weatherDatabase!!

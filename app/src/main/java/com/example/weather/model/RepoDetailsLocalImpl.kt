@@ -6,9 +6,11 @@ import com.example.weather.domain.getWorldCities
 
 class RepoDetailsLocalImpl: RepositoryDetails {
     override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {
-        val list = getWorldCities().toMutableList()
-        list.addAll(getRussianCities())
-        val response = list.filter { it.city.lat == weather.city.lat && it.city.lon == weather.city.lon }
-        callBack.onResponse(response.first())
+       Thread {
+           val list = getWorldCities().toMutableList()
+           list.addAll(getRussianCities())
+           val response = list.filter { it.city.lat == weather.city.lat && it.city.lon == weather.city.lon }
+           callBack.onResponse(response.first())
+       }.start()
     }
 }

@@ -8,7 +8,6 @@ import com.example.weather.MyApplication
 import com.example.weather.domain.Weather
 import com.example.weather.model.*
 import com.example.weather.model.retrofit.RepoDetailsRetrofitImpl
-import java.io.IOException
 
 
 class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :
@@ -58,13 +57,15 @@ class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppS
 
     private val callBack = object : MyLargeFatCallBack {
         override fun onResponse(weather: Weather) {
-            if (isConnection(MyApplication.getMyApp())) {
-                repositoryInsertable.insertWeather(weather)
-            }
+            Thread {
+                if (isConnection(MyApplication.getMyApp())) {
+                    repositoryInsertable.insertWeather(weather)
+                }
+            }.start()
             lifeData.postValue(DetailsFragmentAppState.Success(weather))
         }
 
-        override fun onError(e: IOException) {
+        override fun onError(e: Exception) {
             lifeData.postValue(DetailsFragmentAppState.Error(e))
         }
     }

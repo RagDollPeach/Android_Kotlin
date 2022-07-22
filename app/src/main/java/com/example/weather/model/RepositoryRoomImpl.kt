@@ -10,9 +10,11 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
 
     override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {
         try {
-            callBack.onResponse(converterEntityToWeather(
-                MyApplication.getWeatherDatabase().weatherDao()
-                    .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
+            Thread {
+                callBack.onResponse(converterEntityToWeather(
+                    MyApplication.getWeatherDatabase().weatherDao()
+                        .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
+            }.start()
         } catch (ex: NoSuchElementException) {
             Toast.makeText(MyApplication.getMyApp(),"Этой записи нету в базе данных", Toast.LENGTH_LONG).show()
         }

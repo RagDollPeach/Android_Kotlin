@@ -9,6 +9,7 @@ import com.example.weather.utils.YANDEX_WEATHER_KEY
 import com.example.weather.utils.convertDtoToModel
 import com.example.weather.utils.getLines
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -32,6 +33,10 @@ class RepositoryDetailsWeatherLoaderImpl : RepositoryDetails {
                 val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
                 callBack.onResponse(convertDtoToModel(weatherDTO, weather))
             } catch (e: IOException) {
+                callBack.onError(e)
+            } catch (e: RuntimeException) {
+                callBack.onError(e)
+            } catch (e: JsonSyntaxException) {
                 callBack.onError(e)
             } finally {
                 myConnection.disconnect()

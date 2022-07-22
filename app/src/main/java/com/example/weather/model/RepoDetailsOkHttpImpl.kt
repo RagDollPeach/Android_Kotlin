@@ -11,34 +11,36 @@ import okhttp3.*
 import java.io.IOException
 
 class RepoDetailsOkHttpImpl : RepositoryDetails {
-    override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack){
+    override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {
+        Thread {
+            val client = OkHttpClient()
+            val builder = Request.Builder()
+            builder.addHeader(YANDEX_WEATHER_KEY, BuildConfig.WEATHER_API_KEY)
+            builder.url(
+                "https://api.weather.yandex.ru/v2/informers?" +
+                        "lat=${weather.city.lat}&lon=${weather.city.lon}"
+            )
+            val request: Request = builder.build()
+            val call: Call = client.newCall(request)
 
-        val client = OkHttpClient()
-        val builder = Request.Builder()
-        builder.addHeader(YANDEX_WEATHER_KEY, BuildConfig.WEATHER_API_KEY)
-        builder.url(
-            "https://api.weather.yandex.ru/v2/informers?" +
-                    "lat=${weather.city.lat}&lon=${weather.city.lon}"
-        )
-        val request: Request = builder.build()
-        val call: Call = client.newCall(request)
+            call.enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("@@@", "${e.printStackTrace()}")
+                }
 
-        call.enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                Log.d("@@@", "${e.printStackTrace()}")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (response.isSuccessful && response.body != null) {
-                    response.body?.let {
-                        val responseString = it.string()
-                        val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
-                        callBack.onResponse(convertDtoToModel(weatherDTO,weather))
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful && response.body != null) {
+                        response.body?.let {
+                            val responseString = it.string()
+                            val weatherDTO = Gson().fromJson(responseString, WeatherDTO::class.java)
+                            callBack.onResponse(convertDtoToModel(weatherDTO, weather))
+                        }
                     }
                 }
-            }
-        })
+            })
+        }.start()
     }
+
 }
 
 

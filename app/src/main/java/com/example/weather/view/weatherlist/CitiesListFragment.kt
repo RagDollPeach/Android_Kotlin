@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,9 +71,20 @@ class CitiesListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this).get(CitiesListViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner) { t -> renderData(t) }
+        viewModel.getWeatherForRussia()
 
+        floatingButtonManager()
+        LocalBroadcastManager.getInstance(requireContext())
+            .registerReceiver(receiver, IntentFilter(NETWORK_ACTION))
+
+        radioGroupManager()
+    }
+
+    private fun floatingButtonManager() {
+        binding.floatingButton.setImageResource(R.drawable.ic_earth)
         binding.floatingButton.setOnClickListener {
             isRussian = !isRussian
             if (isRussian) {
@@ -82,22 +95,36 @@ class CitiesListFragment : Fragment(), OnItemClick {
                 binding.floatingButton.setImageResource(R.drawable.ic_russia)
             }
         }
-        viewModel.getWeatherForRussia()
-        binding.floatingButton.setImageResource(R.drawable.ic_earth)
+    }
 
-        LocalBroadcastManager.getInstance(requireContext())
-            .registerReceiver(receiver, IntentFilter(NETWORK_ACTION))
-
+    private fun radioGroupManager() {
         val pref = requireActivity().getSharedPreferences("radio_buttons", Context.MODE_PRIVATE)
+        val colorStateList = ColorStateList(
+            arrayOf(
+                intArrayOf(-android.R.attr.state_enabled),
+                intArrayOf(android.R.attr.state_enabled)
+            ), intArrayOf(Color.BLACK, Color.RED))
 
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton = binding.root.findViewById(checkedId)
+
+            radio.buttonTintList = colorStateList
             when (radio) {
-                okhttp -> { pref.edit().putInt("pref", 1).apply() }
-                retrofit -> { pref.edit().putInt("pref", 2).apply() }
-                loader -> { pref.edit().putInt("pref", 3).apply() }
-                room -> { pref.edit().putInt("pref", 4).apply() }
-                local -> { pref.edit().putInt("pref", 0).apply() }
+                okhttp -> {
+                    pref.edit().putInt("pref", 1).apply()
+                }
+                retrofit -> {
+                    pref.edit().putInt("pref", 2).apply()
+                }
+                loader -> {
+                    pref.edit().putInt("pref", 3).apply()
+                }
+                room -> {
+                    pref.edit().putInt("pref", 4).apply()
+                }
+                local -> {
+                    pref.edit().putInt("pref", 0).apply()
+                }
             }
         }
     }
