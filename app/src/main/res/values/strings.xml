@@ -14,4 +14,5 @@
     <string name="retrofit">retrofit</string>
     <string name="weather_loader">Weather Loader</string>
     <string name="local">Local</string>
+    <string name="room">Room</string>
 </resources>
