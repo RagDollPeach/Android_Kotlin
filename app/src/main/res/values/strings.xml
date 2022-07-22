@@ -10,4 +10,8 @@
     <string name="action_string">push me</string>
     <string name="network_lost">Network lost</string>
     <string name="network_is_available">Network is available</string>
+    <string name="okhttp">OkHTTP</string>
+    <string name="retrofit">retrofit</string>
+    <string name="weather_loader">Weather Loader</string>
+    <string name="local">Local</string>
 </resources>

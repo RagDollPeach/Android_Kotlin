@@ -8,8 +8,8 @@ import com.example.weather.databinding.WeatherListRecycleItemBinding
 import com.example.weather.view.details.OnItemClick
 import com.example.weather.domain.Weather
 
-class WeatherListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
-    RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>() {
+class CitiesListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
+    RecyclerView.Adapter<CitiesListAdapter.WeatherViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WeatherViewHolder {
         val binding = WeatherListRecycleItemBinding.inflate(LayoutInflater.from(parent.context))
