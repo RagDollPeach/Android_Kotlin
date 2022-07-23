@@ -22,7 +22,7 @@ import com.example.weather.domain.Weather
 import com.example.weather.utils.NETWORK_ACTION
 import com.example.weather.utils.NETWORK_KEY
 import com.example.weather.view.details.DetailsFragment
-import com.example.weather.view.details.OnItemClick
+import com.example.weather.interfaces.OnItemClick
 import com.example.weather.viewmodel.citieslist.CitiesListViewModel
 import com.example.weather.viewmodel.citieslist.CityListFragmentAppState
 import com.google.android.material.snackbar.Snackbar

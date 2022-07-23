@@ -1,9 +1,11 @@
-package com.example.weather.model
+package com.example.weather.repositories
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.weather.BuildConfig
 import com.example.weather.domain.Weather
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
 import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.utils.YANDEX_WEATHER_KEY
 import com.example.weather.utils.convertDtoToModel

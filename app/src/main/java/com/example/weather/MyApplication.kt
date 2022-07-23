@@ -2,7 +2,7 @@ package com.example.weather
 
 import android.app.Application
 import androidx.room.Room
-import com.example.weather.model.retrofit.WeatherApi
+import com.example.weather.interfaces.WeatherApi
 import com.example.weather.model.room.WeatherDatabase
 import com.example.weather.utils.ROOM_DATABASE
 import com.google.gson.GsonBuilder

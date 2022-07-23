@@ -3,8 +3,8 @@ package com.example.weather.model.retrofit
 import com.example.weather.BuildConfig
 import com.example.weather.MyApplication
 import com.example.weather.domain.Weather
-import com.example.weather.model.MyLargeFatCallBack
-import com.example.weather.model.RepositoryDetails
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
 import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.utils.convertDtoToModel
 import retrofit2.Call

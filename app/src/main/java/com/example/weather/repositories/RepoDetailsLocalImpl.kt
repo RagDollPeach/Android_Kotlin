@@ -1,8 +1,10 @@
-package com.example.weather.model
+package com.example.weather.repositories
 
 import com.example.weather.domain.Weather
 import com.example.weather.domain.getRussianCities
 import com.example.weather.domain.getWorldCities
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
 
 class RepoDetailsLocalImpl: RepositoryDetails {
     override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {

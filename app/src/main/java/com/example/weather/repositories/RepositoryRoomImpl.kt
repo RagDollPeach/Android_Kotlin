@@ -1,23 +1,27 @@
-package com.example.weather.model
+package com.example.weather.repositories
 
+import android.os.Looper
 import android.widget.Toast
 import com.example.weather.MyApplication
 import com.example.weather.domain.City
 import com.example.weather.domain.Weather
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
+import com.example.weather.interfaces.RepositoryRoomInsertable
 import com.example.weather.model.room.WeatherEntity
 
 class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
 
     override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {
-        try {
-            Thread {
-                callBack.onResponse(converterEntityToWeather(
-                    MyApplication.getWeatherDatabase().weatherDao()
-                        .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
-            }.start()
-        } catch (ex: NoSuchElementException) {
-            Toast.makeText(MyApplication.getMyApp(),"Этой записи нету в базе данных", Toast.LENGTH_LONG).show()
-        }
+        Thread {
+            try {
+                callBack.onResponse(converterEntityToWeather(MyApplication.getWeatherDatabase().weatherDao()
+                            .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
+
+            } catch (ex: NoSuchElementException) {
+                Looper.prepare().let { Toast.makeText(MyApplication.getMyApp(), "Этой записи нету в базе данных", Toast.LENGTH_LONG).show() }
+            }
+        }.start()
     }
 
     override fun insertWeather(weather: Weather) {

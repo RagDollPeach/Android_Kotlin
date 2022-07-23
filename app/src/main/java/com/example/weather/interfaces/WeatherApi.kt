@@ -1,4 +1,4 @@
-package com.example.weather.model.retrofit
+package com.example.weather.interfaces
 
 import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.utils.YANDEX_WEATHER_KEY

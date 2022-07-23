@@ -6,8 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.MyApplication
 import com.example.weather.domain.Weather
-import com.example.weather.model.*
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
+import com.example.weather.interfaces.RepositoryRoomInsertable
 import com.example.weather.model.retrofit.RepoDetailsRetrofitImpl
+import com.example.weather.repositories.RepoDetailsLocalImpl
+import com.example.weather.repositories.RepoDetailsOkHttpImpl
+import com.example.weather.repositories.RepositoryDetailsWeatherLoaderImpl
+import com.example.weather.repositories.RepositoryRoomImpl
 
 
 class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :

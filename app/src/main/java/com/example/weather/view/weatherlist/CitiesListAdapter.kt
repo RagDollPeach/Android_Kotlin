@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.WeatherListRecycleItemBinding
-import com.example.weather.view.details.OnItemClick
+import com.example.weather.interfaces.OnItemClick
 import com.example.weather.domain.Weather
 
 class CitiesListAdapter(private val dataList: List<Weather>, private val callback: OnItemClick) :
