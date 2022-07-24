@@ -10,10 +10,10 @@ import com.example.weather.interfaces.MyLargeFatCallBack
 import com.example.weather.interfaces.RepositoryDetails
 import com.example.weather.interfaces.RepositoryRoomInsertable
 import com.example.weather.model.retrofit.RepoDetailsRetrofitImpl
-import com.example.weather.repositories.RepoDetailsLocalImpl
-import com.example.weather.repositories.RepoDetailsOkHttpImpl
-import com.example.weather.repositories.RepositoryDetailsWeatherLoaderImpl
-import com.example.weather.repositories.RepositoryRoomImpl
+import com.example.weather.model.repositories.RepoDetailsLocalImpl
+import com.example.weather.model.repositories.RepoDetailsOkHttpImpl
+import com.example.weather.model.repositories.RepositoryDetailsWeatherLoaderImpl
+import com.example.weather.model.repositories.RepositoryRoomImpl
 
 
 class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :

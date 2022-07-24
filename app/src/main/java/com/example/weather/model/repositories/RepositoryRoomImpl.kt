@@ -1,4 +1,4 @@
-package com.example.weather.repositories
+package com.example.weather.model.repositories
 
 import android.os.Looper
 import android.widget.Toast

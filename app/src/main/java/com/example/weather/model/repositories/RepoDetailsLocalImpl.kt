@@ -1,4 +1,4 @@
-package com.example.weather.repositories
+package com.example.weather.model.repositories
 
 import com.example.weather.domain.Weather
 import com.example.weather.domain.getRussianCities

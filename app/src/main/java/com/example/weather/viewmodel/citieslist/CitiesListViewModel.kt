@@ -2,7 +2,7 @@ package com.example.weather.viewmodel.citieslist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weather.repositories.RepoCitiesListImpl
+import com.example.weather.model.repositories.RepoCitiesListImpl
 import com.example.weather.interfaces.RepositoryCitiesList
 import com.example.weather.utils.Location
 

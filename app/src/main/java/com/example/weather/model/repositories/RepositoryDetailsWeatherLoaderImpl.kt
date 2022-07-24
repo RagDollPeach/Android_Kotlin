@@ -1,4 +1,4 @@
-package com.example.weather.repositories
+package com.example.weather.model.repositories
 
 import android.os.Build
 import androidx.annotation.RequiresApi
