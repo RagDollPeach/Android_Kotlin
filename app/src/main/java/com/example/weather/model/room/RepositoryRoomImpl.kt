@@ -14,12 +14,16 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
     override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {
         Thread {
             try {
-                callBack.onResponse(converterEntityToWeather(MyApplication.getWeatherDatabase().weatherDao()
-                            .getWeatherByLocation(weather.city.lat, weather.city.lon, weather.icon)).last())
-
+                callBack.onResponse(
+                    converterEntityToWeather(
+                        MyApplication.getWeatherDatabase().weatherDao()
+                            .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
             } catch (ex: NoSuchElementException) {
-                Looper.prepare().let { Toast.makeText(MyApplication.getMyApp(), "Этой записи нету в базе данных", Toast.LENGTH_LONG).show() }
-            }
+                ex.printStackTrace()
+                Looper.prepare().let {
+                    Toast.makeText(
+                        MyApplication.getMyApp(),
+                        "Этой записи нет в базе данных", Toast.LENGTH_LONG).show() } }
         }.start()
     }
 
