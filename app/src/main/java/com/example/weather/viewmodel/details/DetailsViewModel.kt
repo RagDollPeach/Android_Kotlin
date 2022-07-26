@@ -13,7 +13,7 @@ import com.example.weather.model.retrofit.RepoDetailsRetrofitImpl
 import com.example.weather.model.repositories.RepoDetailsLocalImpl
 import com.example.weather.model.repositories.RepoDetailsOkHttpImpl
 import com.example.weather.model.repositories.RepositoryDetailsWeatherLoaderImpl
-import com.example.weather.model.repositories.RepositoryRoomImpl
+import com.example.weather.model.room.RepositoryRoomImpl
 
 
 class DetailsViewModel(private val lifeData: MutableLiveData<DetailsFragmentAppState> = MutableLiveData<DetailsFragmentAppState>()) :

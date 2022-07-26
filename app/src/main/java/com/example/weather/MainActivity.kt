@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.view.contacts.ContactsFragment
+import com.example.weather.view.maps.MapsFragment
 import com.example.weather.view.network.Manager
 import com.example.weather.view.weatherlist.CitiesListFragment
 
@@ -36,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.menu_contacts -> {
                 startFragment(ContactsFragment())
+                true
+            }
+
+            R.id.menu_maps -> {
+                startFragment(MapsFragment())
                 true
             }
             else -> super.onOptionsItemSelected(item)

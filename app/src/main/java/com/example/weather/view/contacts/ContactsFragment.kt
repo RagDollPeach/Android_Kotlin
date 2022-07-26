@@ -107,7 +107,7 @@ class ContactsFragment : Fragment() {
                     val nameAndNumber = "$name - $number"
                     text = nameAndNumber
                     textSize = 24F
-                    setOnClickListener { startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:${number}"))) }
+                    setOnClickListener { startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${number}"))) }
                 })
             }
         }

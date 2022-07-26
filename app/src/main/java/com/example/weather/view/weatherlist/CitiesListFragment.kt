@@ -115,13 +115,32 @@ class CitiesListFragment : Fragment(), OnItemClick {
                     2000L,
                     0f, locationListener)
             } else {
-                Toast.makeText(requireContext(), "Включите локализацию", Toast.LENGTH_LONG).show()
+                try {
+                    // location почему то всегда null, почему ???
+//                    val location =
+//                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!!
+                    val loc = requireActivity().getSharedPreferences("location", Context.MODE_PRIVATE)
+                    val lat = loc.getString("lat", "0.0")?.toDouble()!!
+                    val lon = loc.getString("lon", "0.0")?.toDouble()!!
+
+                    getAddress(lat, lon)
+
+                    Toast.makeText(
+                        requireContext(), "Последняя извесная локация", Toast.LENGTH_LONG).show()
+                } catch (e: NullPointerException) {
+                    e.printStackTrace()
+                    Toast.makeText(requireContext(), "Включите локализацию", Toast.LENGTH_LONG)
+                        .show()
+                }
             }
         }
     }
 
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
+            val loc = requireActivity().getSharedPreferences("location", Context.MODE_PRIVATE)
+            loc.edit().putString("lat",location.latitude.toString()).apply()
+            loc.edit().putString("lon",location.longitude.toString()).apply()
             getAddress(location)
         }
 
@@ -136,6 +155,22 @@ class CitiesListFragment : Fragment(), OnItemClick {
         }
     }
 
+    private fun getAddress(lat:Double, lon: Double) {
+        val geocoder = Geocoder(context, Locale("ru_RU"))
+        Thread {
+            try {
+                val address = geocoder.getFromLocation(lat, lon, 1)
+                locationManager.removeUpdates(locationListener)
+                onItemClick(Weather(City(address.first().locality, lat, lon)))
+            } catch (e: NullPointerException) {
+                Looper.prepare().let {
+                    Toast.makeText(requireContext(), R.string.location_message, Toast.LENGTH_LONG)
+                        .show()
+                }
+            }
+        }.start()
+    }
+
     fun getAddress(location: Location) {
         val geocoder = Geocoder(context, Locale("ru_RU"))
         Thread {
@@ -145,7 +180,9 @@ class CitiesListFragment : Fragment(), OnItemClick {
                 onItemClick(Weather(City(address.first().locality, location.latitude, location.longitude)))
             } catch (e: NullPointerException) {
                 Looper.prepare().let {
-                    Toast.makeText(requireContext(), R.string.location_message, Toast.LENGTH_LONG).show() }
+                    Toast.makeText(requireContext(), R.string.location_message, Toast.LENGTH_LONG)
+                        .show()
+                }
             }
         }.start()
     }
@@ -153,7 +190,8 @@ class CitiesListFragment : Fragment(), OnItemClick {
     private fun checkPermission() {
         val permission = ContextCompat.checkSelfPermission(
             requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION)
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
         if (permission == PackageManager.PERMISSION_GRANTED) {
             getLocation()
         } else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -215,8 +253,7 @@ class CitiesListFragment : Fragment(), OnItemClick {
             arrayOf(
                 intArrayOf(-android.R.attr.state_enabled),
                 intArrayOf(android.R.attr.state_enabled)
-            ), intArrayOf(Color.BLACK, Color.RED)
-        )
+            ), intArrayOf(Color.BLACK, Color.RED))
 
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             val radio: RadioButton = binding.root.findViewById(checkedId)

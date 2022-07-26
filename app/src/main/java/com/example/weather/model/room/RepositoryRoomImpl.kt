@@ -1,4 +1,4 @@
-package com.example.weather.model.repositories
+package com.example.weather.model.room
 
 import android.os.Looper
 import android.widget.Toast
@@ -8,7 +8,6 @@ import com.example.weather.domain.Weather
 import com.example.weather.interfaces.MyLargeFatCallBack
 import com.example.weather.interfaces.RepositoryDetails
 import com.example.weather.interfaces.RepositoryRoomInsertable
-import com.example.weather.model.room.WeatherEntity
 
 class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
 
@@ -16,7 +15,7 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
         Thread {
             try {
                 callBack.onResponse(converterEntityToWeather(MyApplication.getWeatherDatabase().weatherDao()
-                            .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
+                            .getWeatherByLocation(weather.city.lat, weather.city.lon, weather.icon)).last())
 
             } catch (ex: NoSuchElementException) {
                 Looper.prepare().let { Toast.makeText(MyApplication.getMyApp(), "Этой записи нету в базе данных", Toast.LENGTH_LONG).show() }
@@ -33,7 +32,8 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
             Weather(
                 City(it.name, it.lat, it.lon),
                 it.temperature,
-                it.feelsLike
+                it.feelsLike,
+                it.icon
             )
         }
     }
@@ -45,7 +45,8 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
             weather.city.lat,
             weather.city.lon,
             weather.temperature,
-            weather.feelsLike
+            weather.feelsLike,
+            weather.icon
         )
     }
 }

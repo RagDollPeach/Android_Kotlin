@@ -2,6 +2,8 @@ package com.example.weather
 
 import android.app.Application
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.weather.interfaces.WeatherApi
 import com.example.weather.model.room.WeatherDatabase
 import com.example.weather.utils.ROOM_DATABASE
@@ -25,9 +27,16 @@ class MyApplication : Application() {
             if (weatherDatabase == null) {
                 weatherDatabase =
                     Room.databaseBuilder(getMyApp(), WeatherDatabase::class.java, ROOM_DATABASE)
+                        .addMigrations(migration)
                         .build()
             }
             return weatherDatabase!!
+        }
+
+        private val migration = object : Migration(1,2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                database.execSQL("ALTER TABLE weather_entity_table ADD COLUMN icon VARCHAR NOT NULL")
+            }
         }
 
         private fun retrofitCreate(): WeatherApi {
