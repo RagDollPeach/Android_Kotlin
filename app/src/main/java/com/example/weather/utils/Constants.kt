@@ -12,3 +12,9 @@ const val ROOM_DATABASE = "weather_entity_table"
 
 const val REQUEST_CODES = 345
 const val REQUEST_CODE_FOR_LOCATION = 555
+
+const val HIGH_CHANNEL_ID = "high_channel_id"
+const val NOTIFICATION_ID = 125
+const val NOTIFICATION_KEY_TITLE = "myTitle"
+const val NOTIFICATION_KEY_BODY = "myBody"
+const val NOTIFICATION_CHANNEL_NAME = "channel_name_fox"
