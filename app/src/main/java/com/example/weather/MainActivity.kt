@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.view.contacts.ContactsFragment
+import com.example.weather.view.maps.MapsFragment
 import com.example.weather.view.network.Manager
 import com.example.weather.view.weatherlist.CitiesListFragment
 
@@ -33,18 +34,32 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
+        return when (item.itemId) {
             R.id.menu_contacts -> {
-                illuminateFragment(ContactsFragment())
+                startFragment(ContactsFragment())
+                true
+            }
+
+            R.id.menu_maps -> {
+                startFragment(MapsFragment())
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+    // оставляю закоментированый код, что бы не забыть, что есть и такой вариант, как пример
+    private fun startFragment(incomeFragment: Fragment?) {
+        val fragment = supportFragmentManager.findFragmentByTag("tag")
 
-    //метод не дающий записывать в BackStack множество одних и тех же фрагментов
-    private fun illuminateFragment(incomeFragment: Fragment?) {
-        val fragments = supportFragmentManager.fragments
+        if (fragment == null) {
+            supportFragmentManager.apply {
+                beginTransaction()
+                    .replace(R.id.container, incomeFragment!!, "tag")
+                    .addToBackStack("")
+                    .commit()
+            }
+        }
+     /* val fragments = supportFragmentManager.fragments
         var isAboutShow = false
         for (fragment in fragments) {
             if (fragment.javaClass == incomeFragment!!.javaClass && fragment.isVisible) {
@@ -56,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.container, incomeFragment!!)
                 .addToBackStack(null)
                 .commit()
-        }
+        }*/
     }
 
     override fun onStart() {

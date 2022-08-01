@@ -1,9 +1,10 @@
-package com.example.weather.model.room
+package com.example.weather.interfaces
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.weather.model.room.WeatherEntity
 
 @Dao
 interface WeatherDAO {

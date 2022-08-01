@@ -1,14 +1,17 @@
-package com.example.weather.model
+package com.example.weather.model.repositories
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.weather.BuildConfig
 import com.example.weather.domain.Weather
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
 import com.example.weather.model.dto.WeatherDTO
 import com.example.weather.utils.YANDEX_WEATHER_KEY
 import com.example.weather.utils.convertDtoToModel
 import com.example.weather.utils.getLines
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -32,6 +35,10 @@ class RepositoryDetailsWeatherLoaderImpl : RepositoryDetails {
                 val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
                 callBack.onResponse(convertDtoToModel(weatherDTO, weather))
             } catch (e: IOException) {
+                callBack.onError(e)
+            } catch (e: RuntimeException) {
+                callBack.onError(e)
+            } catch (e: JsonSyntaxException) {
                 callBack.onError(e)
             } finally {
                 myConnection.disconnect()

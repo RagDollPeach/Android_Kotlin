@@ -19,6 +19,6 @@ fun convertDtoToModel(weatherDTO: WeatherDTO,weather: Weather): Weather {
 }
 
 fun convertModelToDto(weather: Weather): WeatherDTO {
-    val fact = Fact(weather.feelsLike,weather.temperature)
+    val fact = Fact(weather.feelsLike,weather.temperature, weather.icon)
     return WeatherDTO(fact)
 }

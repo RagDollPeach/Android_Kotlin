@@ -1,9 +1,8 @@
-package com.example.weather.model
+package com.example.weather.interfaces
 
 import com.example.weather.domain.Weather
-import java.io.IOException
 
 interface MyLargeFatCallBack {
     fun onResponse(weather: Weather)
-    fun onError(e: IOException)
+    fun onError(e: Exception)
 }

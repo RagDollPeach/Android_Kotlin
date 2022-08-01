@@ -16,5 +16,22 @@
     <string name="local">Local</string>
     <string name="room">Room</string>
     <string name="contacts">contacts</string>
-    <string name="message">Давай доступ которйы просит программа или иди ..... :D</string>
+    <string name="message">Давай доступ который просит программа</string>
+    <string name="dialog_button_close">Закрыть</string>
+    <string name="dialog_title_no_gps">Доступ к геолокации закрыт</string>
+    <string name="dialog_message_no_gps">Разрешите доступ к геолокации, если хотитеузнать погоду текущего места</string>
+    <string name="dialog_title_gps_turned_off">GPS отключён</string>
+    <string name="dialog_message_last_location_unknown">Местонахождение неизвестно.Включите GPS, если хотите получить погоду по текущему адресу</string>
+    <string name="dialog_message_last_known_location">Показана последняя известнаялокация. Включите GPS, если хотите обновить местонахождение</string>
+    <string name="dialog_rationale_title">Доступ к геолокации</string>
+    <string name="dialog_rationale_message">Объяснение</string>
+    <string name="dialog_rationale_give_access">Предоставить доступ</string>
+    <string name="dialog_rationale_decline">Не надо</string>
+    <string name="dialog_address_title">Ваш адрес</string>
+    <string name="dialog_address_get_weather">Узнать погоду</string>
+    <string name="location_message">Пожалуйста вылезите из болота и двигайтесь ближе к цевилизации</string>
+    <string name="maps">maps</string>
+    <string name="search">search</string>
+    <string name="moscow">Moscow</string>
+    <string name="searching_maps_message">Введите название города или местности</string>
 </resources>

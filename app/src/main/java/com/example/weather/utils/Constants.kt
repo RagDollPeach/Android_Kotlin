@@ -11,3 +11,4 @@ const val NETWORK_ACTION = "network_action_key"
 const val ROOM_DATABASE = "weather_entity_table"
 
 const val REQUEST_CODES = 345
+const val REQUEST_CODE_FOR_LOCATION = 555

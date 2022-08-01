@@ -1,21 +1,30 @@
-package com.example.weather.model
+package com.example.weather.model.room
 
+import android.os.Looper
 import android.widget.Toast
 import com.example.weather.MyApplication
 import com.example.weather.domain.City
 import com.example.weather.domain.Weather
-import com.example.weather.model.room.WeatherEntity
+import com.example.weather.interfaces.MyLargeFatCallBack
+import com.example.weather.interfaces.RepositoryDetails
+import com.example.weather.interfaces.RepositoryRoomInsertable
 
 class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
 
     override fun getWeather(weather: Weather, callBack: MyLargeFatCallBack) {
-        try {
-            callBack.onResponse(converterEntityToWeather(
-                MyApplication.getWeatherDatabase().weatherDao()
-                    .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
-        } catch (ex: NoSuchElementException) {
-            Toast.makeText(MyApplication.getMyApp(),"Этой записи нету в базе данных", Toast.LENGTH_LONG).show()
-        }
+        Thread {
+            try {
+                callBack.onResponse(
+                    converterEntityToWeather(
+                        MyApplication.getWeatherDatabase().weatherDao()
+                            .getWeatherByLocation(weather.city.lat, weather.city.lon)).last())
+            } catch (ex: NoSuchElementException) {
+                ex.printStackTrace()
+                Looper.prepare().let {
+                    Toast.makeText(
+                        MyApplication.getMyApp(),
+                        "Этой записи нет в базе данных", Toast.LENGTH_LONG).show() } }
+        }.start()
     }
 
     override fun insertWeather(weather: Weather) {
@@ -27,7 +36,8 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
             Weather(
                 City(it.name, it.lat, it.lon),
                 it.temperature,
-                it.feelsLike
+                it.feelsLike,
+                it.icon
             )
         }
     }
@@ -39,7 +49,8 @@ class RepositoryRoomImpl : RepositoryDetails, RepositoryRoomInsertable {
             weather.city.lat,
             weather.city.lon,
             weather.temperature,
-            weather.feelsLike
+            weather.feelsLike,
+            weather.icon
         )
     }
 }
