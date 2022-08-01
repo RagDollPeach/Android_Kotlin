@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -45,9 +46,12 @@ android {
 }
 
 dependencies {
-
+    //maps
     implementation "com.google.android.gms:play-services-location:20.0.0"
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    //FCM
+    implementation 'com.google.firebase:firebase-messaging:23.0.6'
 
     //room
     apply plugin: 'kotlin-kapt'
