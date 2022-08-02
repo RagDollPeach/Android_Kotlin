@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             ).commit()
         }
 
-        pushNotification("Бизнес треннинг", "Новая лекция , шанс заработать моллион за 5 минут, лекцию ведет COUCH - бомж Порфилий")
+      //  pushNotification("Бизнес треннинг", "Новая лекция , шанс заработать моллион за 5 минут, лекцию ведет COUCH - бомж Порфилий")
     }
 
     private fun pushNotification(title: String, body: String) {
