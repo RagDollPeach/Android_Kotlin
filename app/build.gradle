@@ -26,7 +26,7 @@ android {
             def password = properties.getProperty("password")
             storeFile file("release.jks")
             storePassword = password
-            keyAlias 'b'
+            keyAlias 'alias'
             keyPassword = password
         }
     }
@@ -43,6 +43,7 @@ android {
 
     buildTypes {
         release {
+            //multiDexEnabled true // если функций больше чем 65000
             signingConfig = signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

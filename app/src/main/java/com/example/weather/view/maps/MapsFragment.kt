@@ -54,7 +54,7 @@ class MapsFragment : Fragment() {
             && ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            //прописал проверку, а она все равно крассным подчеркнута
+
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
         } else {
@@ -76,14 +76,14 @@ class MapsFragment : Fragment() {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
-        // получилось прописать проверку, приложение больше не падает
+
         binding.buttonSearch.setOnClickListener {
             binding.searchAddress.text.toString().let { searchText ->
                searchMaps(searchText)
             }
         }
     }
-    // написал одинаковые тосты потому, что все эти исключения выбрвсываются из за плохо заполненого поля поиска
+
     private fun searchMaps(searchText: String) {
         val geocoder = Geocoder(requireContext())
         Thread {

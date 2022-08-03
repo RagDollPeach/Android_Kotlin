@@ -35,7 +35,7 @@ class MyApplication : Application() {
 
         private val migration = object : Migration(1,2) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE weather_entity_table ADD COLUMN icon VARCHAR NOT NULL")
+                database.execSQL("ALTER TABLE weather_entity_table ADD COLUMN icon  DEFAULT 0  NOT NULL ")
             }
         }
 
